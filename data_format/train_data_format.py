@@ -10,13 +10,14 @@ from sklearn.ensemble import RandomForestRegressor
 warnings.filterwarnings('ignore')
 
 train_data = pd.read_csv('../titanic/train.csv')
+test_data = pd.read_csv('../titanic/test.csv')
 
 sns.set_style('whitegrid')
 train_data.head()
 
-# train_data.info()
-# print("-" * 40)
-# test_data.info()
+train_data.info()
+print("-" * 40)
+test_data.info()
 
 # 处理空值
 # embark 上船地点 填充众数
@@ -39,8 +40,8 @@ RFR = RandomForestRegressor(n_estimators=1000, n_jobs=-1)
 RFR.fit(X, Y)
 predictAges = RFR.predict(age_df_isnull.values[:, 1:])
 train_data.loc[train_data['Age'].isnull(), ['Age']] = predictAges
-# print("-" * 40)
-# train_data.info()
+print("-" * 40)
+train_data.info()
 # ####### 处理空值结束
 
 # dummy
@@ -57,7 +58,7 @@ train_data['CabinLetter'] = train_data['Cabin'].map(lambda x: re.compile("([a-zA
 _index = pd.factorize(train_data['CabinLetter'])
 train_data['CabinLetter'] = pd.factorize(train_data['CabinLetter'])[0]
 
-print(train_data[['Cabin', 'CabinLetter']].head(50))
+print(train_data[['Cabin', 'CabinLetter']].head(20))
 
 assert np.size(train_data['Age']) == 891
 # 将年龄映射到范围(-1,1)
